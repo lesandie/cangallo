@@ -25,40 +25,40 @@ $ bundle install
 ## How to install
 Just type:
 ```
-$ git clone https://github.com/jfontan/cangallo
+$ gem install cangallo
 ```
-Then go to the cangallo/bin folder and type
+Then type
 ```
-$ ./canga
+$ canga
 ```
 The output should be:
 ```
-$ ./canga
+$ canga
 Commands:
-  canga --version, -V              # show version
-  canga add FILE [REPO]            # add a new file to the repository
-  canga build CANGAFILE            # create a new image using a Cangafile
-  canga create FILE [SIZE]         # create a new qcow2 image
-  canga del IMAGE                  # delete an image from the repo
-  canga deltag TAGNAME             # delete a tag
-  canga export IMAGE OUTPUT        # export an image to a file
-  canga fetch [REPO]               # download the index of the repository
-  canga help [COMMAND]             # Describe available commands or one specific command
-  canga import IMAGE [repository]  # import an image from a remote repository
-  canga list [REPO]                # list images
-  canga overlay IMAGE FILE         # create a new image based on another one
-  canga pull NAME                  # download an image from a remote repository
-  canga show IMAGE                 # show information about an image
-  canga sign [REPO]                # sign the index file with keybase
-  canga tag TAGNAME IMAGE          # add a tag name to an existing image
-  canga verify [REPO]              # verify index signature with keybase
-  $ 
+  canga --version, -V        # show version
+  canga add FILE [REPO]      # add a new file to the repository
+  canga build CANGAFILE      # create a new image using a Cangafile
+  canga create FILE [SIZE]   # create a new qcow2 image
+  canga del IMAGE            # delete an image from the repository
+  canga deltag TAGNAME       # delete a tag
+  canga export IMAGE OUTPUT  # export an image to a file
+  canga fetch [REPO]         # download the index of the repository
+  canga help [COMMAND]       # Describe available commands or one specific command
+  canga import IMAGE [REPO]  # import an image from a remote repository
+  canga list [REPO]          # list images
+  canga overlay IMAGE FILE   # create a new image based on another one
+  canga pull NAME            # download an image from a remote repository
+  canga show IMAGE           # show information about an image
+  canga sign [REPO]          # sign the index file with keybase
+  canga tag TAGNAME IMAGE    # add a tag name to an existing image
+  canga verify [REPO]        # verify index signature with keybase
 ```
+
 ## Usage and parameters
 
-Syntax: ```canga [PARAM] [COMMAND]``` 
+Syntax: ```canga [PARAM] [COMMAND]```
 
-### version 
+### version
 --version or -V prints out the version number
 ### add
 The add parameter, adds a file to the canga repository
@@ -67,7 +67,7 @@ of converting it. With this command the sha256 hash of
 the file does not change. This is useful to import images
 prepared by Linux distros. Check the "Adding an image to a repository" example below
 ### build
-Create a new image using a Cangafile config. Check the "Create a derived image" example below. 
+Create a new image using a Cangafile config. Check the "Create a derived image" example below.
 ### create
 Create a new qcow2 image. Check the "Creating a qcow2 image" example below.
 ### del
@@ -95,20 +95,23 @@ Sign the index file with keybase. Check the "Sign index" example below
 ### tag
 Add a tag name to an existing image
 ### verify
-Ferify index signature with keybase. Check the "Verify index signature" example below
+Verify index signature with keybase. Check the "Verify index signature" example below
 ## Examples and scenarios
 
 ### Creating a qcow2 image
 creating test.qcow2 1GB image
 
 ```
-$ bin/canga create test.qcow2 1G
+$ canga create test.qcow2 1G
+test.qcow2
+1G
 qemu-img create -f qcow2 test.qcow2 1G
+
 $ qemu-img info test.qcow2
 image: test.qcow2
 file format: qcow2
 virtual size: 1.0G (1073741824 bytes)
-disk size: 392K
+disk size: 196K
 cluster_size: 65536
 Format specific information:
     compat: 1.1
@@ -121,29 +124,51 @@ Format specific information:
 Adding test.qcow2 to the repo
 
 ```
-$ bin/canga add test.qcow2 --tag test_image
-Calculating image sha1 with libguestfs (it will take some time)
- 100% ⟦▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒⟧ --:--
-Image SHA1: 2a492f15396a6768bcbca016993f4b4c8b0b5307
+$ canga add test.qcow2 --tag test_image
+Calculating image sha256 with libguestfs (it will take some time)
+ 100% ⟦▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒⟧ --:--
+Image SHA256: 49bc20df15e412a64472421e13fe86ff1c5165e18b2afccf160d4dc19fe68a14
 Copying file to repository
-qemu-img convert -p -O qcow2 -c test.qcow2 repo/2a492f15396a6768bcbca016993f4b4c8b0b5307.qcow2
-qemu-img info --output=json repo/2a492f15396a6768bcbca016993f4b4c8b0b5307.qcow2
+qemu-img convert -p -O qcow2 -c test.qcow2 /home/jfontan/.cangallo/default/49bc20df15e412a64472421e13fe86ff1c5165e18b2afccf160d4dc19fe68a14.qcow2
+qemu-img info --output=json /home/jfontan/.cangallo/default/49bc20df15e412a64472421e13fe86ff1c5165e18b2afccf160d4dc19fe68a14.qcow2
 ```
 
 ### Listing images in a repository
 
 ```
-$ bin/canga list
-NAME                                  SIZE DESCRIPTION
-  default:zentyal                1221.1 Mb
-^ default:zentyal/one               2.8 Mb Zentyal with context packages
-  default:centos72                372.9 Mb
-^ default:473d40cc50278446         60.6 Mb OpenNebula Compatible CentOS 7
-  default:alpine                   76.6 Mb
-^ default:e7033e957c559fb0          0.4 Mb test image
-  remote:zentyal                 1221.1 Mb
-^ remote:zentyal/one                2.8 Mb Zentyal with context packages
- *remote:centos72                 372.9 Mb
+$ canga list
+NAME                                                      SIZE DAYS_AGO
+  default:zentyal                                    1221.1 Mb    123.1
+^ default:zentyal/one                                   2.8 Mb    123.1
+    Zentyal with context packages
+  default:alpine                                       76.6 Mb    117.3
+  default:centos7                                     370.2 Mb     35.4
+  default:debian8                                     455.8 Mb     35.4
+  default:ubuntu1404                                  247.6 Mb     35.4
+  default:ubuntu1604                                  290.1 Mb     35.4
+^ default:centos7/one                                  47.7 Mb     35.2
+    OpenNebula Compatible CentOS 7
+^ default:debian8/one                                  60.1 Mb     35.2
+    OpenNebula Compatible Debian 8
+^ default:ubuntu1404/one                               51.0 Mb     35.2
+    OpenNebula Compatible Ubuntu 14.04
+^ default:ubuntu1604/one                               78.0 Mb     35.2
+    OpenNebula Compatible Ubuntu 16.04
+^ default:alpine/test                                   0.4 Mb     16.9
+    test image
+  default:centos7-1503                                150.1 Mb      4.2
+  default:centos7-1606                                354.2 Mb      2.5
+ *remote:zentyal                                     1221.1 Mb    123.1
+^*remote:zentyal/one                                    2.8 Mb    123.1
+    Zentyal with context packages
+  remote:centos72                                     372.9 Mb    119.1
+^ remote:473d40cc50278446                              60.6 Mb    119.1
+    OpenNebula Compatible CentOS 7.2
+ *remote:alpine                                        76.6 Mb    117.3
+^*remote:e7033e957c559fb0                               0.4 Mb    117.3
+    test image
+  local:ubuntu1404                                    270.4 Mb     88.1
+  test_remote:ubuntu1404                              270.4 Mb     88.1
 ```
 
 * `^`: has a parent
@@ -155,17 +180,21 @@ To create a derived image a "Cangafile" is used. It's a yaml file like this one:
 
 ```yaml
 ---
-description: OpenNebula Compatible Ubuntu 16.04
-os: Ubuntu 16.04
-parent: 850dd1fccd8f5b1e201755beec0754ab3fb610b7
-files:
-  - context /
-run:
-  - dpkg -i /context/one-context*deb
-  - apt-get remove -y cloud-init
-  - apt-get install -y util-linux cloud-utils ruby
-  - rm -rf /context
-  - apt-get clean
+description: OpenNebula Compatible CentOS 7
+os: CentOS 7
+parent: centos7
+tag: centos7/example
+tasks:
+  - copy: context /
+  - run:
+    - rpm -Uvh /context/one-context*rpm
+    - yum remove -y NetworkManager cloud-init
+    - yum install -y epel-release cloud-utils-growpart ruby --nogpgcheck
+    - yum upgrade -y util-linux --nogpgcheck
+  - delete: /context
+  - password:
+      user: root
+      password: opennebula
 ```
 
 * `files` is an array with files and directories to be copied into the image.
@@ -174,96 +203,123 @@ run:
 Example:
 
 ```
-$ bin/canga build Cangafile.latest
+$ canga build centos7.canga
 copy-in context:/
-run-command dpkg -i /context/one-context*deb
-run-command apt-get remove -y cloud-init
-run-command apt-get install -y util-linux cloud-utils ruby
+run-command rpm -Uvh /context/one-context*rpm
+run-command yum remove -y NetworkManager cloud-init
+run-command yum install -y epel-release cloud-utils-growpart ruby --nogpgcheck
+run-command yum upgrade -y util-linux --nogpgcheck
 run-command rm -rf /context
-run-command apt-get clean
-qemu-img create -f qcow2 -o backing_file=/home/jfontan/projects/cangallo/repo/850dd1fccd8f5b1e201755beec0754ab3fb610b7.qcow2 repo/temp-1.qcow2
+qemu-img create -f qcow2 -o backing_file=/home/jfontan/projects/cangallo/repo/ba34b3fce37bc452a2ce51b67b03e94982a6eb27f4eac9584bd78dada9b4d34c.qcow2 /home/jfontan/projects/cangallo/repo/centos7.canga20160714-15977-101cte7.qcow2
 [   0.0] Examining the guest ...
-[   6.3] Setting a random seed
-[   6.3] Copying: context to /
-[   6.3] Running: dpkg -i /context/one-context*deb
-[   8.6] Running: apt-get remove -y cloud-init
-[  11.1] Running: apt-get install -y util-linux cloud-utils ruby
-[  51.4] Running: rm -rf /context
-[  51.5] Running: apt-get clean
-[  52.5] Finishing off
-[   3.3] Trimming /dev/sda1
-[   3.5] Sparsify in-place operation completed with no errors
-Calculating image sha1 with libguestfs (it will take some time)
- 100% ⟦▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒⟧ --:--
-Image SHA1: 8a02f25118384ca9142081af76e24de7d1dd6816
+[   8.6] Setting a random seed
+[   8.6] Copying: context to /
+[   8.6] Running: rpm -Uvh /context/one-context*rpm
+[   9.3] Running: yum remove -y NetworkManager cloud-init
+[  12.8] Running: yum install -y epel-release cloud-utils-growpart ruby --nogpgcheck
+[  28.9] Running: yum upgrade -y util-linux --nogpgcheck
+[  34.7] Running: rm -rf /context
+[  34.7] Setting passwords
+[  37.5] Finishing off
+[   4.7] Trimming /dev/sda1
+[   5.1] Sparsify in-place operation completed with no errors
+Calculating image sha256 with libguestfs (it will take some time)
+ 100% ⟦▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒⟧ --:--
+Image SHA256: 88591321d6630bd03ed6b845f556534bb37e2deb83a951966a91e6adf412d3f4
 Copying file to repository
-qemu-img convert -p -O qcow2 -c -o backing_file=/home/jfontan/projects/cangallo/repo/850dd1fccd8f5b1e201755beec0754ab3fb610b7.qcow2 repo/temp-1.qcow2 repo/8a02f25118384ca9142081af76e24de7d1dd6816.qcow2
-qemu-img info --output=json repo/8a02f25118384ca9142081af76e24de7d1dd6816.qcow2
-qemu-img rebase -u -b 850dd1fccd8f5b1e201755beec0754ab3fb610b7.qcow2 repo/8a02f25118384ca9142081af76e24de7d1dd6816.qcow2
+qemu-img convert -p -O qcow2 -c -o backing_file=/home/jfontan/projects/cangallo/repo/ba34b3fce37bc452a2ce51b67b03e94982a6eb27f4eac9584bd78dada9b4d34c.qcow2 /home/jfontan/projects/cangallo/repo/centos7.canga20160714-15977-101cte7.qcow2 /home/jfontan/projects/cangallo/repo/88591321d6630bd03ed6b845f556534bb37e2deb83a951966a91e6adf412d3f4.qcow2
+qemu-img info --output=json /home/jfontan/projects/cangallo/repo/88591321d6630bd03ed6b845f556534bb37e2deb83a951966a91e6adf412d3f4.qcow2
+qemu-img rebase -u -b ba34b3fce37bc452a2ce51b67b03e94982a6eb27f4eac9584bd78dada9b4d34c.qcow2 /home/jfontan/projects/cangallo/repo/88591321d6630bd03ed6b845f556534bb37e2deb83a951966a91e6adf412d3f4.qcow2
 Deleting temporary image
 ```
 
-The image generated is a compressed delta to the parent image. Its hash is `8a02f25118384ca9` and you can see in the list command it only holds the diffence to the parent image (`850dd1fccd8f5b1e`):
+The image generated is a compressed delta to the parent image. The new image (`centos7/example`) is a delta image and only contains differences with its parent (`centos7`):
 
 ```
-$ bin/canga list
-HASH                                     SIZE       DISK_SIZE  DESCRIPTION
-850dd1fccd8f5b1e (ubuntu:16.04)          2361393152 302292992
-8a02f25118384ca9                         2361393152 14819328   OpenNebula Compatible Ubuntu 16.04
+$ canga list default
+NAME                                                      SIZE DAYS_AGO
+  default:centos7                                     370.2 Mb     35.4
+^ default:centos7/example                              50.3 Mb      0.0
+    OpenNebula Compatible CentOS 7
 ```
 
 ### Tag an image
 
 ```
-$ bin/canga tag ubuntu:one:16.04 8a02f25118384ca9142081af76e24de7d1dd6816
-$ bin/canga list
-HASH                                     SIZE       DISK_SIZE  DESCRIPTION
-850dd1fccd8f5b1e (ubuntu:16.04)          2361393152 302292992
-8a02f25118384ca9 (ubuntu:one:16.04)      2361393152 14819328   OpenNebula Compatible Ubuntu 16.04
+$ canga list
+NAME                                                      SIZE DAYS_AGO
+  default:49bc20df15e412a6                              0.2 Mb      0.0
+
+$ canga tag test_image default:49bc20df15e412a6
+
+$ canga list
+NAME                                                      SIZE DAYS_AGO
+  default:test_image                                    0.2 Mb      0.0
 ```
 
 ### Sign index
 
 ```
-$ bin/canga sign
-$ ls -l repo/index.yaml.sig
--rw-r--r-- 1 jfontan jfontan 801 Mar 13 16:52 repo/index.yaml.sig
+$ canga sign default
+[enter passphrase]
+
+$ ls -l ~/.cangallo/default/index.yaml.sig
+-rw-r--r-- 1 jfontan jfontan 801 Jul 14 22:13 /home/jfontan/.cangallo/default/index.yaml.sig
 ```
 
 ### Verify index signature
 
 ```
-$ bin/canga verify
-Signature verified. Signed by jfontan 4 minutes ago (2016-03-13 16:52:28 +0100 CET).
+$ canga verify default
+Signature verified. Signed by jfontan 26 seconds ago (2016-07-14 22:15:28 +0200 CEST).
 PGP Fingerprint: d21c933397d1dea76ab4035a5255eb6cbbceb6b3.
+```
+
+### Add a remote repo
+
+```
+$ cat ~/.cangallo/config
+default_repo: default
+repos:
+    default:
+      type: local
+      path: ~/.cangallo/default
+    remote:
+      type: remote
+      path: ~/.cangallo/remote
+      url: http://localhost:8000
 ```
 
 ### Download a repo index
 
 ```
-$ bin/canga fetch --repo=remote
+$ bin/canga fetch remote
 ```
 
 ### Pull images from a remote repository
 
 ```
-$ bin/canga list
-NAME                                  SIZE DESCRIPTION
- *remote:centos72                 372.9 Mb
-^*remote:473d40cc50278446          60.6 Mb OpenNebula Compatible CentOS 7
-$ bin/canga pull remote:473d40cc50278446
-Downloading remote:centos72
-curl -o '/home/jfontan/.cangallo/remote/5318a77f9faae02f2e575e903045fcd8fa66d791e912fca7fbe96189e413a1cb.qcow2' 'http://localhost:8000/5318a77f9faae02f2e575e903045fcd8fa66d791e912fca7fbe96189e413a1cb.qcow2'
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100  373M  100  373M    0     0   273M      0  0:00:01  0:00:01 --:--:--  273M
-Downloading remote:473d40cc50278446
-curl -o '/home/jfontan/.cangallo/remote/473d40cc502784464d69b41bd38109e5794b48169ee803b80bcb625b98d5bedf.qcow2' 'http://localhost:8000/473d40cc502784464d69b41bd38109e5794b48169ee803b80bcb625b98d5bedf.qcow2'
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100 60.7M  100 60.7M    0     0   210M      0 --:--:-- --:--:-- --:--:--  210M
-$ bin/canga list
-NAME                                  SIZE DESCRIPTION
-  remote:centos72                 372.9 Mb
-^ remote:473d40cc50278446          60.6 Mb OpenNebula Compatible CentOS 7
+$ canga list remote
+NAME                                                      SIZE DAYS_AGO
+ *remote:ubuntu1404                                   270.4 Mb     88.1
+
+$ canga pull remote:ubuntu1404
+Downloading remote:ubuntu1404
+
+$ canga list remote
+NAME                                                      SIZE DAYS_AGO
+  remote:ubuntu1404                                   270.4 Mb     88.1
 ```
+
+## License
+
+Docker is licensed under the Apache License, Version 2.0.
+
+Author:
+  * Javier Fontan Muiños
+
+Contributors:
+
+  * Dan Kelleher
+  * Diego Nieto Caride
+

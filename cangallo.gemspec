@@ -19,7 +19,8 @@ Gem::Specification.new do |s|
     'lib/cangallo/keybase.rb',
     'lib/cangallo/libguestfs.rb',
     'lib/cangallo/qcow2.rb',
-    'lib/cangallo/repo.rb'
+    'lib/cangallo/repo.rb',
+    'lib/cangallo/version.rb'
   ]
   s.homepage    = 'http://canga.io'
   s.executables = [ 'canga' ]

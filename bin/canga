@@ -56,7 +56,7 @@ class Canga < Thor
     repo.add_tag(options[:tag], sha256) if options[:tag]
   end
 
-  desc "del IMAGE", "delete an image from the repo"
+  desc "del IMAGE", "delete an image from the repository"
   def del(name)
     image = $cangallo.get(name)
 
@@ -82,7 +82,7 @@ class Canga < Thor
     repo.add_tag(tag, image['sha256'])
   end
 
-  desc "deltag TAGNAME", "deletes a tag"
+  desc "deltag TAGNAME", "delete a tag"
   def deltag(tag)
     repo, name = $cangallo.parse_name(tag)
     image = $cangallo.get(tag)
@@ -231,7 +231,7 @@ class Canga < Thor
     repo.verify
   end
 
-  desc "pull NAME", "downloads an image from a remote repository"
+  desc "pull NAME", "download an image from a remote repository"
   def pull(name)
     image = $cangallo.get(name)
 
@@ -273,7 +273,7 @@ class Canga < Thor
     Cangallo::Qcow2.new(path).convert(output,options)
   end
 
-  desc "import IMAGE [repository]", "import an image from a remote repository"
+  desc "import IMAGE [REPO]", "import an image from a remote repository"
   option :tag, :desc => "tag name of the new image"
   def import(image_name, repo = nil)
     image = $cangallo.get(image_name)
