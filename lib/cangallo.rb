@@ -22,6 +22,7 @@ require 'cangallo/cangafile'
 require 'cangallo/libguestfs'
 require 'cangallo/keybase'
 require 'cangallo/version'
+require 'cangallo/check'
 
 class Cangallo
   def initialize
