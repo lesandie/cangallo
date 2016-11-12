@@ -300,6 +300,15 @@ class Canga < Thor
 
     repository.write_index
   end
+
+  desc "check_system", "check system configuration"
+  def check_system
+    check = Cangallo::Check.new
+
+    rc = check.check
+
+    exit(-1) if !rc
+  end
 end
 
 Canga.start(ARGV)
