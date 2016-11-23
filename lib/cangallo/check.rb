@@ -23,21 +23,19 @@ class Cangallo
     end
 
     def check
-      valid = true
+      problem = false
 
-      valid = valid_kernel = check_kernel
-      help_kernel if !valid_kernel
+      problem ||= !check_kernel
+      problem ||= !check_qemu_img
+      problem ||= !check_libguestfs
 
-      valid = valid_qemu_img = check_qemu_img
-      help_qemu_img if !valid_qemu_img
-
-      if !valid
+      if problem
         text = "There is at least one problem in your system."
 
         STDERR.puts text
       end
 
-      valid
+      problem
     end
 
     def check_kernel
@@ -47,6 +45,7 @@ class Cangallo
         end
       end
 
+      help_kernel
       false
     end
 
@@ -75,7 +74,12 @@ at least one kernel in that directory to be readable by the current user.
       good = Gem::Version.new('2.4.0')
       current = Gem::Version.new(version)
 
-      current >= good
+      if current >= good
+        true
+      else
+        help_qemu_img
+        false
+      end
     end
 
     def help_qemu_img
@@ -86,6 +90,41 @@ download this qemu-img binary and add it to the path. Make sure the path
 possition is before #{%x(which qemu-img).strip}.
 
 https://canga.io/downloads/qemu-img.bz2
+
+      EOT
+
+      STDERR.puts text
+    end
+
+    def check_libguestfs
+      version = Cangallo::LibGuestfs.version
+
+      if !version
+        text = "Could not get virt-customize version. Is libguestfs installed?"
+
+        STDERR.puts text
+        STDERR.puts
+        exit(-1)
+      end
+
+      current = Gem::Version.new(version)
+      good = Gem::Version.new("1.30.0")
+      enough = Gem::Version.new("1.28.0")
+
+      if current < enough
+        help_libguestfs
+        return false
+      elsif current < good
+        STDERR.puts "libguestfs >= 1.30.0 recomended"
+        STDERR.puts
+      end
+
+      true
+    end
+
+    def help_libguestfs
+      text = <<-EOT
+libguestfs version 1.28.0 is needed although 1.30.0 or newer is recomended.
 
       EOT
 
