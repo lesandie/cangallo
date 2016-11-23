@@ -30,7 +30,13 @@ class Cangallo
       problem ||= !check_libguestfs
 
       if problem
-        text = "There is at least one problem in your system."
+        text = <<-EOT
+There is at least one problem in your system. You can go this page to
+get more information on how to fix them:
+
+https://canga.io/install/
+
+        EOT
 
         STDERR.puts text
       end
