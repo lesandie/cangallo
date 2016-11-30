@@ -32,7 +32,7 @@ class Cangallo
       if problem
         text = <<-EOT
 There is at least one problem in your system. You can go this page to
-get more information on how to fix them:
+get more information on how to fix it:
 
 https://canga.io/install/
 
@@ -40,6 +40,13 @@ https://canga.io/install/
 
         STDERR.puts text
       end
+
+      STDERR.puts <<-EOT
+It's also a good idea to execute libguestfs test tool:
+
+    $ libguestfs-test-tool
+
+EOT
 
       problem
     end

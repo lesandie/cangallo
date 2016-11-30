@@ -307,7 +307,7 @@ class Canga < Thor
 
     rc = check.check
 
-    exit(-1) if !rc
+    exit(-1) if rc
   end
 end
 
