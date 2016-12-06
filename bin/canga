@@ -257,8 +257,8 @@ class Canga < Thor
   desc "export IMAGE OUTPUT", "export an image to a file"
   option :format, :desc => "format for output image", :default => :qcow2,
          :aliases => :f
-  option :compress, :desc => "compress output qcow2 image", :default => false,
-         :aliases => :c
+  option :compress, :desc => "compress output qcow2 image", :type => :boolean,
+         :default => false, :aliases => :c
   def export(image, output)
     image = $cangallo.get(image)
 
