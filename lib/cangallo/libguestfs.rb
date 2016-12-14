@@ -96,7 +96,7 @@ class Cangallo
     def self.version
       str = `virt-customize --version`
 
-      m = str.match(/^virt-customize (.*)$/)
+      m = str.match(/^virt-customize (\d+\.\d+\.\d+).*$/)
 
       if m
         m[1]
