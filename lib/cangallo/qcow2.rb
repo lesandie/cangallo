@@ -36,7 +36,7 @@ class Cangallo
     def self.qemu_img_version
       text = execute("--version")
 
-      m = text.match(/^qemu-img version (\d+\.\d+\.\d+),/)
+      m = text.match(/^qemu-img version (\d+\.\d+\.\d+)/)
 
       if m
         m[1]
