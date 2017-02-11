@@ -31,6 +31,7 @@ $cangallo = Cangallo.new
 
 class Canga < Thor
   map ['--version', '-V'] => :__print_version
+  map 'rm' => :del, 'rmtag' => :deltag
 
   desc "--version, -V", "show version"
   def __print_version
