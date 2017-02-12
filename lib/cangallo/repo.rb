@@ -164,6 +164,11 @@ class Cangallo
       end
 
       @images.delete(sha256)
+
+      @tags.select {|key, value| value == sha256 }.keys.each do |tag|
+          @tags.delete(tag)
+      end
+
       write_index
     end
 
