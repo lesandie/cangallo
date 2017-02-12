@@ -157,7 +157,11 @@ class Cangallo
       raise %Q{Image "#{image}" does not exist} if !sha256
 
       path = image_path(sha256)
-      File.delete(path)
+      begin
+          File.delete(path)
+      rescue Errno::ENOENT
+          STDERR.puts "Image file not found"
+      end
 
       @images.delete(sha256)
       write_index
