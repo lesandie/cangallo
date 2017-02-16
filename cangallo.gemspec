@@ -5,7 +5,7 @@ require 'cangallo/version'
 Gem::Specification.new do |s|
   s.name        = 'cangallo'
   s.version     = Cangallo::VERSION
-  s.date        = '2016-06-28'
+  s.date        = Time.now.strftime "%Y-%m-%d"
   s.summary     = "Cangallo!!"
   s.description = "VM Image manager"
   s.authors     = ["Javier Fontan"]
@@ -20,9 +20,10 @@ Gem::Specification.new do |s|
     'lib/cangallo/libguestfs.rb',
     'lib/cangallo/qcow2.rb',
     'lib/cangallo/repo.rb',
-    'lib/cangallo/version.rb'
+    'lib/cangallo/version.rb',
+    'lib/cangallo/check.rb'
   ]
-  s.homepage    = 'http://canga.io'
+  s.homepage    = 'https://canga.io'
   s.executables = [ 'canga' ]
   s.add_runtime_dependency 'thor'
   s.add_runtime_dependency 'systemu'

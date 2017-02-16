@@ -25,6 +25,26 @@ class Cangallo
   class Qcow2
     attr_reader :path
 
+    def self.qemu_img=(path)
+      @@qemu_img = path
+    end
+
+    def self.qemu_img
+      @@qemu_img ||= "qemu-img"
+    end
+
+    def self.qemu_img_version
+      text = execute("--version")
+
+      m = text.match(/^qemu-img version (\d+\.\d+\.\d+)/)
+
+      if m
+        m[1]
+      else
+        nil
+      end
+    end
+
     def initialize(path=nil)
       @path=path
     end
@@ -119,7 +139,7 @@ class Cangallo
     end
 
     def self.execute(command, *params)
-      command = "qemu-img #{command} #{params.join(' ')}"
+      command = "#{qemu_img} #{command} #{params.join(' ')}"
       STDERR.puts command
 
       status, stdout, stderr = systemu command

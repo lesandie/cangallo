@@ -1,7 +1,7 @@
 
-CANGALLO
+CANGALLO (https://canga.io)
 
-Cangallo (pronounced canga-io) is a command-line tool written in ruby, that uses `qemu-img` and `libguestfs` to manage, create and organize qcow2 images. It's repository holds images and deltas of derived images in a similar way as Docker but in a block level instead of file level.
+Cangallo (pronounced canga-io) is a command-line tool written in ruby, that uses `qemu-img` and `libguestfs` to manage, create and organize qcow2 images. Its repository holds images and deltas of derived images in a similar way as Docker but in a block level instead of file level.
 It should work nicely on any `Linux` flavor but, we recommend `Ubuntu` or `CentOS`.
 
 **WARNING**: Beware, still in early stages, expect crashes, data loss and incompatible changes. Working on the OSX port with no ETA: (unmet dependencies like `libguestfs` and `mkisofs`)
@@ -9,9 +9,9 @@ It should work nicely on any `Linux` flavor but, we recommend `Ubuntu` or `CentO
 ## Requirements before using cangallo
 Before using cangallo, you will need to have some tools up and running:
 
-* Ruby >= 2.2.0
+* Ruby >= 1.9.3
 * qemu-img >= 2.4.0
-* libguestfs, tested with 1.28 but should work with older versions
+* libguestfs >= 1.28 (copy command needs at least 1.30)
 * keybase, for index sign and verify functionality
 
 ## Ruby dependencies
@@ -22,7 +22,12 @@ $ gem install bundle
 $ bundle install
 ```
 
+## Package dependencies
+
+You can find instructions for different Linux distros at [Installation](/install).
+
 ## How to install
+
 Just type:
 ```
 $ gem install cangallo
@@ -275,6 +280,32 @@ Signature verified. Signed by jfontan 26 seconds ago (2016-07-14 22:15:28 +0200 
 PGP Fingerprint: d21c933397d1dea76ab4035a5255eb6cbbceb6b3.
 ```
 
+### Share a repository
+
+Cangallo repositories consist of a set of qcow2 image, an index file and optionaly a signature file. By default the repositories reside in `~/.cangallo`. For example for the `default` repostory the path is `~/.cangallo/default`:
+
+```
+$ ls -l ~/.cangallo/default/
+total 4153760
+[...]
+2b64e459108e6bcad50db87.qcow2
+-rw-r--r-- 1 jfontan jfontan    3014656 Mar 13 18:29 ede6706563e709cd3ee76119113627a62a9cdad3d6f3223a60fe7dd3f311d55d.qcow2
+-rw-r--r-- 1 jfontan jfontan 1283999744 Mar 13 18:27 f9c30346359d1a0c80ad9bafdada11decadeaf2b8e3118ba2bae4831319c3342.qcow2
+-rw-r--r-- 1 jfontan jfontan   83623936 Jul 21 12:45 fe2c457f66a75856c5aa7f2c5b5b73edc060a60de4fb67f20b5afa5a63ed7f0a.qcow2
+-rw-r--r-- 1 jfontan jfontan      18773 Jul 21 12:45 index.yaml
+-rw-r--r-- 1 jfontan jfontan        801 Jul 14 22:15 index.yaml.sig
+```
+
+To share this repository you can just make it available using an http server. For example, using python to test:
+
+```
+$ python2 -mSimpleHTTPServer
+Serving HTTP on 0.0.0.0 port 8000 ...
+```
+
+To share on external server rsync is recommended.
+
+
 ### Add a remote repo
 
 ```
@@ -313,7 +344,7 @@ NAME                                                      SIZE DAYS_AGO
 
 ## License
 
-Docker is licensed under the Apache License, Version 2.0.
+Cangallo is licensed under the Apache License, Version 2.0.
 
 Author:
   * Javier Fontan Muiños

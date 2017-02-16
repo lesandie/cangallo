@@ -31,6 +31,7 @@ $cangallo = Cangallo.new
 
 class Canga < Thor
   map ['--version', '-V'] => :__print_version
+  map 'rm' => :del, 'rmtag' => :deltag
 
   desc "--version, -V", "show version"
   def __print_version
@@ -257,8 +258,8 @@ class Canga < Thor
   desc "export IMAGE OUTPUT", "export an image to a file"
   option :format, :desc => "format for output image", :default => :qcow2,
          :aliases => :f
-  option :compress, :desc => "compress output qcow2 image", :default => false,
-         :aliases => :c
+  option :compress, :desc => "compress output qcow2 image", :type => :boolean,
+         :default => false, :aliases => :c
   def export(image, output)
     image = $cangallo.get(image)
 
@@ -299,6 +300,15 @@ class Canga < Thor
     repository.add_tag(options[:tag], sha256) if options[:tag]
 
     repository.write_index
+  end
+
+  desc "check_system", "check system configuration"
+  def check_system
+    check = Cangallo::Check.new
+
+    rc = check.check
+
+    exit(-1) if rc
   end
 end
 
